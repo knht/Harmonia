@@ -23,6 +23,9 @@
   "dependencies": {
     "@types/node": "^10.12.15",
     "axios": "^0.18.0",
+    "axios-cache-adapter": "^2.1.1",
+    "axios-extensions": "^3.0.4",
+    "jsdoc-to-markdown": "^4.0.1",
     "node-cache": "^4.2.0"
   }
 }
