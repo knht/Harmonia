@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Kotowaru/Harmonia#readme",
   "dependencies": {
+    "@types/node": "^10.12.15",
     "axios": "^0.18.0",
     "node-cache": "^4.2.0"
   }
