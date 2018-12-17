@@ -1,6 +1,6 @@
 # Harmonia
 
-Harmonia is an osu! library made for easy use.
+Harmonia is an easy to use osu! API wrapper.
 
 ## Getting Started
 First step to getting started is to grab your api key: https://osu.ppy.sh/p/api
@@ -17,8 +17,13 @@ npm i harmonia-osu
 
 Basic example of how Harmonia works
 
-```
-yeet
+```js
+const harmonia = require('harmonia-osu');
+
+let osu = harmonia.Harmonia('api-key');
+let user = osu.getUser('Kisei Denma', harmonia.Modes.STD).then((data) => {
+  // do something with the data
+});
 ```
 
 ## Built With
