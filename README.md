@@ -7,16 +7,11 @@ First step to getting started is to grab your api key: https://osu.ppy.sh/p/api
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
+Installing is rather simple, just use the line below to install.
 
 ```
 haha yes
 ```
-
-End with an example of getting some data out of the system or using it for a little demo
-
 
 ### Basic Usage
 
