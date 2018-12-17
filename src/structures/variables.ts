@@ -19,6 +19,20 @@ var BeatmapGenres: any = {
   "9": "Hip Hop",
   "10": "Electronic"
 }
+var MatchType: any = {
+  "0": "Score",
+  "1": "Accuracy",
+  "2": "Combo",
+  "3": "Score v2"
+}
+
+var TeamType: any = {
+  "0": "Head to Head",
+  "1": "Tag Co-op",
+  "2": "Team vs Team",
+  "3": "Tag team vs Tag team"
+}
+
 var BeatmapLanguages: any = {
   "0": "Unspecified",
   "1": "Other",
@@ -42,6 +56,8 @@ var Modes: any = {
 export default {
   BeatmapTypes,
   BeatmapGenres,
+  MatchType,
+  TeamType,
   BeatmapLanguages,
   Modes
 }

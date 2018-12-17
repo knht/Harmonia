@@ -2,6 +2,7 @@ import { Mods } from './enums/Mods'
 import { Modes } from './enums/Modes';
 export class Score {
 
+  beatmapID: String
   score: String
   rank: String
   pp: String
@@ -13,6 +14,7 @@ export class Score {
   counts: Object
 
   constructor(scoreData: any) {
+    this.beatmapID = scoreData.beatmap_id || null
     this.score = scoreData.score
     this.rank = scoreData.rank
     this.pp = scoreData.pp

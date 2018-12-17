@@ -3,6 +3,7 @@ import { Request } from './services/Request'
 import { Modes } from './structures/enums/Modes'
 import { BeatmapOptions } from './structures/enums/BeatmapOptions'
 import { User } from './structures/User'
+import { Match } from './structures/Match'
 import { Beatmap } from './structures/Beatmap'
 import { Score } from './structures/Score'
 import { resolve } from 'path';
@@ -75,7 +76,42 @@ export class Harmonia {
           return reject(new Error("Couldn't retrieve scores."))
         }
         resolve(new Score(resp[0]))
-      })
+      }).catch(reject)
+    })
+  }
+
+  getUserBest(username: string, mode: Modes, limit: Number=10) {
+    return new Promise((resolve, reject) => {
+      if(!this.apiKey) return reject(new Error("You haven't set an api key"))
+      if(!username) return reject(new Error('A username is needed to get their recent best scores'))
+      this.requestHandler.http('/get_user_best', {k: this.apiKey, u: username, m: mode, limit: limit}).then((resp: any) => {
+        if(!resp.length) return reject(new Error("Couldn't get recent best"))
+        if(resp.length) return resolve(resp.map((best: any) => new Score(best)))
+        resolve(new Score(resp[0]))
+      }).catch(reject)
+    })
+  }
+
+  getUserRecent(username: string, mode: Modes, limit: Number=10) {
+    return new Promise((resolve, reject) => {
+      if(!this.apiKey) return reject(new Error("You haven't set an api key"))
+      if(!username) return reject(new Error('A username is needed to get their recent scores'))
+      this.requestHandler.http('/get_user_recent', {k: this.apiKey, u: username, m: mode, limit: limit}).then((resp: any) => {
+        if(!resp.length) return reject(new Error("Couldn't get recent scores"))
+        if(resp.length) return resolve(resp.map((recent: any) => new Score(recent)))
+        resolve(new Score(resp[0]))
+      }).catch(reject)
+    })
+  }
+
+  getMatch(matchID: String) {
+    return new Promise((resolve, reject) => {
+      if(!this.apiKey) return reject(new Error("You haven't set an api key"))
+      if(!matchID) return reject(new Error('A match id is needed to get a match'))
+      this.requestHandler.http('/get_user_recent', {k: this.apiKey, mp: matchID}).then((resp: any) => {
+        if(!resp.length) return reject(new Error("Couldn't get this match"))
+        resolve(new Match(resp[0]))
+      }).catch(reject)
     })
   }
 }
