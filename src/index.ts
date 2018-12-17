@@ -1,7 +1,9 @@
 
 import { Request } from './services/Request'
 import { Modes } from './structures/enums/Modes'
-import { AxiosResponse } from 'axios'
+import { BeatmapOptions } from './structures/interfaces/BeatmapOptions'
+import { User } from './structures/User'
+import { Beatmap } from './structures/Beatmap'
 
 export class Harmonia {
 
@@ -31,12 +33,26 @@ export class Harmonia {
 
   getUser(username: string, mode: Modes, eventDays: number=1) {
     return new Promise((resolve, reject) => {
-      if(!this.apiKey) reject(new Error('You haven\'t set an api key'))
-      if(!username) reject(new Error('A username is required to search for a user'))
+      if(!this.apiKey) return reject(new Error('You haven\'t set an api key'))
+      if(!username) return reject(new Error('A username is required to search for a user'))
       if(!mode) mode = Modes.STD
-      this.requestHandler.http('/get_user', {k: this.apiKey, u: username, m: mode, eventDays}).then((resp: AxiosResponse) => {
-        resolve(resp)
-      }).catch((err: any) => reject(err))
+      this.requestHandler.http('/get_user', {k: this.apiKey, u: username, m: mode, eventDays}).then((resp: any) => {
+        if(!resp.length) return reject(new Error('Couldn\'t find that user'))
+        resolve(new User(resp[0]))
+      }).catch(reject)
+    })
+  }
+
+  getBeatmaps(beatmapID: string, mode: Modes, options: BeatmapOptions) {
+    return new Promise((resolve, reject) => {
+      if(!this.apiKey) return reject(new Error('You haven\'t set an api key'))
+      if(!beatmapID) return reject(new Error('Please provide a beatmapid'))
+      if(!mode) mode = Modes.STD
+      let searchOptions = Object.assign(options, { k: this.apiKey, b: beatmapID})
+      this.requestHandler.http('/get_beatmaps', searchOptions).then((resp: any) => {
+        if(!resp.length) return reject(new Error("Beatmap couldn't be found."))
+        resolve(resp.map((b: any) => new Beatmap(b)))
+      }).catch(reject)
     })
   }
 

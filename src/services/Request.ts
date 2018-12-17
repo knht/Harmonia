@@ -32,7 +32,7 @@ export class Request {
           return reject(new Error(`Failed to send request: ${response.statusText}`))
         }
         resolve(response.data)
-      }).catch((err: any) => reject(err))
+      }).catch(reject)
     })
   }
 }
