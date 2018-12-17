@@ -1,9 +1,11 @@
 
 import { Request } from './services/Request'
 import { Modes } from './structures/enums/Modes'
-import { BeatmapOptions } from './structures/interfaces/BeatmapOptions'
+import { BeatmapOptions } from './structures/enums/BeatmapOptions'
 import { User } from './structures/User'
 import { Beatmap } from './structures/Beatmap'
+import { Score } from './structures/Score'
+import { resolve } from 'path';
 
 export class Harmonia {
 
@@ -43,12 +45,19 @@ export class Harmonia {
     })
   }
 
+  /**
+   * 
+   * @param {string} beatmapID - The ID of the beatmap __**NOT**__ the beatmap setid.
+   * @param {string} mode - Choose the mode you want to search with (standard by default).
+   * @param {BeatmapOptions} options - (Optional) Options pertaining to the beatmap.
+   * @param {string} options.user - Get beatmap data on a given user
+   */
   getBeatmaps(beatmapID: string, mode: Modes, options: BeatmapOptions) {
     return new Promise((resolve, reject) => {
       if(!this.apiKey) return reject(new Error('You haven\'t set an api key'))
       if(!beatmapID) return reject(new Error('Please provide a beatmapid'))
       if(!mode) mode = Modes.STD
-      let searchOptions = Object.assign(options, { k: this.apiKey, b: beatmapID})
+      let searchOptions = Object.assign(options, { k: this.apiKey, m: mode, b: beatmapID})
       this.requestHandler.http('/get_beatmaps', searchOptions).then((resp: any) => {
         if(!resp.length) return reject(new Error("Beatmap couldn't be found."))
         resolve(resp.map((b: any) => new Beatmap(b)))
@@ -56,6 +65,19 @@ export class Harmonia {
     })
   }
 
+  getScores(beatmapID: string, mode: Modes, username: string='', options: any) {
+    return new Promise((resolve, reject) => {
+      if(!this.apiKey) return reject(new Error('You haven\'t set an api key'))
+      if(!beatmapID) return reject(new Error('Please provide a beatmapid'))
+      let searchOptions = Object.assign(options, { k: this.apiKey, b: beatmapID, u: username})
+      this.requestHandler.http('/get_scores', searchOptions).then((resp: any) => {
+        if(!resp.length) {
+          return reject(new Error("Couldn't retrieve scores."))
+        }
+        resolve(new Score(resp[0]))
+      })
+    })
+  }
 }
 
 export { Modes } from './structures/enums/Modes'
