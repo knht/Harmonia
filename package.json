@@ -1,7 +1,7 @@
 {
-  "name": "harmonia",
+  "name": "harmonia-osu",
   "version": "1.0.0",
-  "description": "An osu! api wrapper",
+  "description": "An osu! api library",
   "main": "lib/index.js",
   "scripts": {
     "prepare": "npm run build",
@@ -15,7 +15,7 @@
     "url": "git+https://github.com/Kotowaru/Harmonia.git"
   },
   "author": "Kisei",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Kotowaru/Harmonia/issues"
   },
@@ -23,9 +23,6 @@
   "dependencies": {
     "@types/node": "^10.12.15",
     "axios": "^0.18.0",
-    "axios-cache-adapter": "^2.1.1",
-    "axios-extensions": "^3.0.4",
-    "jsdoc-to-markdown": "^4.0.1",
-    "node-cache": "^4.2.0"
+    "axios-extensions": "^3.0.4"
   }
 }

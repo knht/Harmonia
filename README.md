@@ -10,7 +10,7 @@ First step to getting started is to grab your api key: https://osu.ppy.sh/p/api
 Installing is rather simple, just use the line below to install.
 
 ```
-haha yes
+npm i harmonia-osu
 ```
 
 ### Basic Usage
