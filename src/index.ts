@@ -6,7 +6,6 @@ import { User } from './structures/User'
 import { Match } from './structures/Match'
 import { Beatmap } from './structures/Beatmap'
 import { Score } from './structures/Score'
-import { resolve } from 'path';
 
 export class Harmonia {
 

@@ -20,7 +20,7 @@ Basic example of how Harmonia works
 ```js
 const harmonia = require('harmonia-osu');
 
-let osu = harmonia.Harmonia('api-key');
+let osu = new harmonia.Harmonia('api-key');
 let user = osu.getUser('Kisei Denma', harmonia.Modes.STD).then((data) => {
   // do something with the data
 });
