@@ -58,8 +58,10 @@ export class Harmonia {
       if(!beatmapID) return reject(new Error('Please provide a beatmapid'))
       if(!mode) mode = Modes.STD
       let searchOptions
-      if(options != null || undefined) searchOptions = Object.assign(options, { k: this.apiKey, m: mode, b: beatmapID})
-      searchOptions = { k: this.apiKey, m: mode }
+      if(options != null || undefined) {
+        searchOptions = Object.assign({ k: this.apiKey, m: mode, b: beatmapID}, options)
+      }
+      searchOptions = { k: this.apiKey, m: mode, limit: 1 }
       this.requestHandler.http('/get_beatmaps', searchOptions).then((resp: any) => {
         if(!resp.length) return reject(new Error("Beatmap couldn't be found."))
         resolve(resp.map((b: any) => new Beatmap(b)))
@@ -73,9 +75,9 @@ export class Harmonia {
       if(!beatmapID) return reject(new Error('Please provide a beatmapid'))
       let searchOptions
       if(options != null || undefined) {
-        searchOptions = Object.assign(options, { k: this.apiKey, m: mode, b: beatmapID})
+        searchOptions = Object.assign({ k: this.apiKey, u: username, m: mode, b: beatmapID})
       }
-      searchOptions = {k: this.apiKey, m: mode, u: username}
+      searchOptions = {k: this.apiKey, m: mode, u: username, limit: 1}
       this.requestHandler.http('/get_scores', searchOptions).then((resp: any) => {
         if(!resp.length) {
           return reject(new Error("Couldn't retrieve scores."))

@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, AxiosAdapter } from 'axios'
 import { Options } from '../structures/interfaces/RequestOptions'
-import { cacheAdapterEnhancer } from 'axios-extensions';
+import { cacheAdapterEnhancer, throttleAdapterEnhancer } from 'axios-extensions';
 
 
 export class Request {
@@ -20,7 +20,7 @@ export class Request {
         'Cache-Control': 'no-cache',
         'User-Agent': `Harmonia v${require('../../package.json').version} (https://github.com/Kotowaru/Harmonia)`
       },
-      adapter: cacheAdapterEnhancer(axios.defaults.adapter as AxiosAdapter)
+      adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter as AxiosAdapter, { cacheFlag: 'useCache'}))
     })
   }
 
