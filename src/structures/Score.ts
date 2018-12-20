@@ -36,9 +36,13 @@ export class Score {
 	get enabledMods() {
 		var mods = [];
 		for (let mod in Mods) {
-			if (parseInt(this.rawMods) == Mods[mod])
-				mods.push(mod);
+      if (parseInt(this.rawMods) & Mods[mod])
+        mods.push(mod);
+        if(mod == 'Nightcore') {
+          let index = mods.indexOf('DoubleTime')
+          mods.splice(1, index)
+        }
     }
 		return mods;
-	}
+  }
 }

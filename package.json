@@ -1,6 +1,6 @@
 {
   "name": "harmonia-osu",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "An osu! api wrapper",
   "main": "lib/index.js",
   "scripts": {

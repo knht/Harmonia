@@ -24,6 +24,9 @@ export class Harmonia {
     this.apiKey = key
     this.options = options
     this.requestHandler = new Request(options)
+    if(!key) {
+      throw new Error('An api key is needed in order to use this.')
+    }
   }
   
   /**
@@ -35,7 +38,6 @@ export class Harmonia {
 
   getUser(username: string, mode: Modes, eventDays: number=1) {
     return new Promise((resolve, reject) => {
-      if(!this.apiKey) return reject(new Error('You haven\'t set an api key'))
       if(!username) return reject(new Error('A username is required to search for a user'))
       if(!mode) mode = Modes.STD
       this.requestHandler.http('/get_user', {k: this.apiKey, u: username, m: mode, eventDays}).then((resp: any) => {
@@ -52,33 +54,32 @@ export class Harmonia {
    * @param {BeatmapOptions} options - (Optional) Options pertaining to the beatmap.
    * @param {string} options.user - Get beatmap data on a given user
    */
-  getBeatmaps(beatmapID: string, mode: Modes, options: BeatmapOptions) {
+  getBeatmapByID(beatmapID: string, mode: Modes, limit: Number=10) {
     return new Promise((resolve, reject) => {
-      if(!this.apiKey) return reject(new Error('You haven\'t set an api key'))
-      if(!beatmapID) return reject(new Error('Please provide a beatmapid'))
+      if(!beatmapID) return reject(new Error('A Beatmap id is needed to get a beatmap :/'))
       if(!mode) mode = Modes.STD
-      let searchOptions
-      if(options != null || undefined) {
-        searchOptions = Object.assign({ k: this.apiKey, m: mode, b: beatmapID}, options)
-      }
-      searchOptions = { k: this.apiKey, m: mode, limit: 1 }
-      this.requestHandler.http('/get_beatmaps', searchOptions).then((resp: any) => {
+      this.requestHandler.http('/get_beatmaps', { k: this.apiKey, b: beatmapID, m: mode, limit: limit }).then((resp: any) => {
         if(!resp.length) return reject(new Error("Beatmap couldn't be found."))
         resolve(resp.map((b: any) => new Beatmap(b)))
       }).catch(reject)
     })
   }
 
-  getScores(beatmapID: string, mode: Modes, username: string='', options: any) {
+  getUserBeatmaps(username: string, mode: Modes, limit: Number=10) {
     return new Promise((resolve, reject) => {
-      if(!this.apiKey) return reject(new Error('You haven\'t set an api key'))
-      if(!beatmapID) return reject(new Error('Please provide a beatmapid'))
-      let searchOptions
-      if(options != null || undefined) {
-        searchOptions = Object.assign({ k: this.apiKey, u: username, m: mode, b: beatmapID})
-      }
-      searchOptions = {k: this.apiKey, m: mode, u: username, limit: 1}
-      this.requestHandler.http('/get_scores', searchOptions).then((resp: any) => {
+      if(!username) return reject(new Error('Please provide a username to retrieve their beatmaps.'))
+      if(!mode) mode = Modes.STD
+      this.requestHandler.http('/get_beatmaps', { k: this.apiKey, m: mode, b: username, limit: limit}).then((resp: any) => {
+        if(!resp.length) return reject(new Error("Beatmap couldn't be found."))
+        resolve(resp.map((b: any) => new Beatmap(b)))
+      }).catch(reject)
+    })
+  }
+
+  getScores(beatmapID: string, mode: Modes, username: string='', limit: Number=10) {
+    return new Promise((resolve, reject) => {
+      if(!beatmapID) return reject(new Error("I can't get the scores without its Beatmap ID"))
+      this.requestHandler.http('/get_scores', {k: this.apiKey, b: beatmapID, m: mode, u: username, limit: limit}).then((resp: any) => {
         if(!resp.length) {
           return reject(new Error("Couldn't retrieve scores."))
         }
@@ -89,7 +90,6 @@ export class Harmonia {
 
   getUserBest(username: string, mode: Modes, limit: Number=10) {
     return new Promise((resolve, reject) => {
-      if(!this.apiKey) return reject(new Error("You haven't set an api key"))
       if(!username) return reject(new Error('A username is needed to get their recent best scores'))
       this.requestHandler.http('/get_user_best', {k: this.apiKey, u: username, m: mode, limit: limit}).then((resp: any) => {
         if(!resp.length) return reject(new Error("Couldn't get recent best"))
@@ -101,7 +101,6 @@ export class Harmonia {
 
   getUserRecent(username: string, mode: Modes, limit: Number=10) {
     return new Promise((resolve, reject) => {
-      if(!this.apiKey) return reject(new Error("You haven't set an api key"))
       if(!username) return reject(new Error('A username is needed to get their recent scores'))
       this.requestHandler.http('/get_user_recent', {k: this.apiKey, u: username, m: mode, limit: limit}).then((resp: any) => {
         if(!resp.length) return reject(new Error("Couldn't get recent scores"))
@@ -113,11 +112,10 @@ export class Harmonia {
 
   getMatch(matchID: String) {
     return new Promise((resolve, reject) => {
-      if(!this.apiKey) return reject(new Error("You haven't set an api key"))
       if(!matchID) return reject(new Error('A match id is needed to get a match'))
-      this.requestHandler.http('/get_user_recent', {k: this.apiKey, mp: matchID}).then((resp: any) => {
-        if(!resp.length) return reject(new Error("Couldn't get this match"))
-        resolve(new Match(resp[0]))
+      this.requestHandler.http('/get_match', {k: this.apiKey, mp: matchID}).then((resp: any) => {
+        if(!resp) return reject(new Error("Couldn't get this match"))
+        resolve(new Match(resp))
       }).catch(reject)
     })
   }

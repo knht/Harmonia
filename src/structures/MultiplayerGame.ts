@@ -13,7 +13,7 @@ export class MultiplayerGame {
   teamType: String
   mods: Array<String>
   constructor(gameData: any) {
-    this.id = gameData.games_id,
+    this.id = gameData.game_id,
     this.start = gameData.start_time,
     this.end = gameData.end_time,
     this.beatmapID = gameData.beatmap_id,
