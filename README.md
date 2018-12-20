@@ -26,6 +26,9 @@ let user = osu.getUser('Kisei Denma', harmonia.Modes.STD).then((data) => {
 });
 ```
 
+## Documentation
+Documentation can be found [here](https://kotowaru.github.io/slate/)
+
 ## Built With
 
 * [Typescript](https://www.typescriptlang.org/docs/home.html/) - Language Used
