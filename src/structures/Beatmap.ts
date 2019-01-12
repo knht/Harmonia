@@ -1,27 +1,28 @@
 import variables from './variables'
+
 export class Beatmap {
-  id: String
-  beatmapSetID: String
-  status: String
-  mode: String
-  tags: String
-  source: String
-  hash: String
-  title: String
-  version: String
-  approvedDate: String
-  lastUpdate: String
-  artist: String
-  language: String
-  genre: String
-  bpm: String
-  maxCombo: String
-  length: String
-  playCount: String
-  passCount: String
-  totalFavorites: String
-  difficulty: Object
-  creator: Object
+  public id: string;
+  public beatmapSetID: string;
+  public status: string;
+  public mode: string;
+  public tags: string;
+  public source: string;
+  public hash: string;
+  public title: string;
+  public version: string;
+  public approvedDate: string;
+  public lastUpdate: string;
+  public artist: string;
+  public language: string;
+  public genre: string;
+  public bpm: string;
+  public maxCombo: string;
+  public length: string;
+  public playCount: string;
+  public passCount: string;
+  public totalFavorites: string;
+  public difficulty: object;
+  public creator: object;
 
   constructor(beatmapData: any) {
     this.id = beatmapData.beatmap_id
