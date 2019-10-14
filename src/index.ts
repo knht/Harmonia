@@ -65,7 +65,7 @@ export class Harmonia {
       if(!username) return reject(new Error('Please provide a username to retrieve their beatmaps.'))
       if(!mode) mode = Modes.STD
       this.requestHandler.http('/get_beatmaps', { k: this.apiKey, m: mode, b: username, limit: limit}).then((resp: any) => {
-        if(!resp.length) return reject(new Error("Beatmap couldn't be found."))
+        if(!resp.length) return reject([])
         resolve(resp.map((b: any) => new Beatmap(b)))
       }).catch(reject)
     })
@@ -83,7 +83,7 @@ export class Harmonia {
       if(!beatmapID) return reject(new Error("I can't get the scores without its Beatmap ID"))
       this.requestHandler.http('/get_scores', {k: this.apiKey, b: beatmapID, m: mode, u: username, limit: limit}).then((resp: any) => {
         if(!resp.length) {
-          return reject(new Error("Couldn't retrieve scores."))
+          return reject([])
         }
         resolve(new Score(resp[0]))
       }).catch(reject)
@@ -100,7 +100,7 @@ export class Harmonia {
     return new Promise((resolve, reject) => {
       if(!username) return reject(new Error('A username is needed to get their recent best scores'))
       this.requestHandler.http('/get_user_best', { k: this.apiKey, u: username, m: mode, limit: limit }).then((resp: any) => {
-        if(!resp.length) return reject(new Error("Couldn't get recent best"))
+        if(!resp.length) return reject([])
         if(resp.length) return resolve(resp.map((best: any) => new Score(best)))
         resolve(new Score(resp[0]))
       }).catch(reject)
@@ -116,7 +116,7 @@ export class Harmonia {
     return new Promise((resolve, reject) => {
       if(!username) return reject(new Error('A username is needed to get their recent scores'))
       this.requestHandler.http('/get_user_recent', { k: this.apiKey, u: username, m: mode, limit: limit }).then((resp: any) => {
-        if(!resp.length) return reject(new Error("Couldn't get recent scores"))
+        if(!resp.length) return reject([])
         if(resp.length) return resolve(resp.map((recent: any) => new Score(recent)))
         resolve(new Score(resp[0]))
       }).catch(reject)
